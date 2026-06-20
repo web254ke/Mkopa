@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mkopa Unlock · STK Payment</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #0b1a2e 0%, #0d1f36 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .card {
+            max-width: 520px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 3rem;
+            padding: 2.2rem 2rem 2.8rem;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            transition: all 0.2s ease;
+        }
+
+        /* header */
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .brand i {
+            font-size: 2.2rem;
+            color: #fbbf24;
+            filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.3));
+        }
+
+        .brand h1 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #fbbf24, #f59e0b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .subhead {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            color: #94a3b8;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 0.75rem;
+        }
+
+        .subhead span i {
+            color: #34d399;
+            margin-right: 6px;
+        }
+
+        /* phone grid */
+        .phone-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.8rem;
+            margin: 2rem 0 2.2rem;
+        }
+
+        .phone-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 2rem;
+            padding: 0.9rem 0.2rem;
+            text-align: center;
+            color: #e2e8f0;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: all 0.15s;
+            cursor: default;
+            backdrop-filter: blur(4px);
+        }
+
+        .phone-item i {
+            display: block;
+            font-size: 1.6rem;
+            margin-bottom: 4px;
+            color: #f1f5f9;
+        }
+
+        .phone-item.active {
+            background: rgba(251, 191, 36, 0.12);
+            border-color: #fbbf24;
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.05);
+        }
+
+        .phone-item.active i {
+            color: #fbbf24;
+        }
+
+        /* form */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: #cbd5e1;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.3px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 2.5rem;
+            color: #f8fafc;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: #fbbf24;
+            box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.15);
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .form-group input::placeholder {
+            color: #64748b;
+            font-weight: 400;
+        }
+
+        .input-hint {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-top: 0.4rem;
+            padding-left: 0.5rem;
+        }
+
+        /* pay button */
+        .pay-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            border: none;
+            padding: 1rem;
+            border-radius: 3rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #0b1a2e;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 8px 24px rgba(251, 191, 36, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 0.75rem;
+        }
+
+        .pay-btn i {
+            font-size: 1.2rem;
+        }
+
+        .pay-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(251, 191, 36, 0.35);
+            background: linear-gradient(135deg, #fcd34d, #f59e0b);
+        }
+
+        .pay-btn:active {
+            transform: scale(0.97);
+        }
+
+        .pay-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* status / callback message */
+        #statusMessage {
+            margin-top: 1.8rem;
+            padding: 1rem 1.2rem;
+            border-radius: 2.5rem;
+            background: rgba(0, 0, 0, 0.25);
+            border-left: 4px solid #fbbf24;
+            color: #e2e8f0;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: 0.3s;
+            min-height: 4.2rem;
+        }
+
+        #statusMessage i {
+            font-size: 1.3rem;
+            color: #fbbf24;
+        }
+
+        .callback-badge {
+            background: rgba(52, 211, 153, 0.15);
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #34d399;
+            letter-spacing: 0.3px;
+            border: 1px solid rgba(52, 211, 153, 0.15);
+            margin-left: auto;
+        }
+
+        .swift-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.65rem;
+            color: #94a3b8;
+            border: 1px dashed rgba(255, 255, 255, 0.08);
+            margin-top: 1.2rem;
+            text-align: center;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            letter-spacing: 0.2px;
+        }
+
+        .swift-tag i {
+            color: #fbbf24;
+            font-size: 0.6rem;
+            margin-right: 5px;
+        }
+
+        /* loader */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(11, 26, 46, 0.2);
+            border-top: 2px solid #0b1a2e;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 480px) {
+            .card { padding: 1.8rem 1.2rem; }
+            .phone-grid { gap: 0.5rem; }
+            .phone-item { font-size: 0.7rem; padding: 0.6rem 0; }
+            .brand h1 { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <!-- header -->
+    <div class="brand">
+        <i class="fas fa-unlock-alt"></i>
+        <h1>Mkopa Unlock</h1>
+    </div>
+    <div class="subhead">
+        <span><i class="fas fa-phone-alt"></i> Lipa mdogo mdogo</span>
+        <span><i class="fas fa-tag"></i> discounted rates</span>
+    </div>
+
+    <!-- phone selection -->
+    <div class="phone-grid" id="phoneGrid">
+        <div class="phone-item active" data-phone="Samsung"><i class="fab fa-android"></i>Samsung</div>
+        <div class="phone-item" data-phone="iPhone"><i class="fab fa-apple"></i>iPhone</div>
+        <div class="phone-item" data-phone="Tecno"><i class="fas fa-mobile-alt"></i>Tecno</div>
+        <div class="phone-item" data-phone="Oppo"><i class="fas fa-mobile"></i>Oppo</div>
+        <div class="phone-item" data-phone="Nokia"><i class="fas fa-phone"></i>Nokia</div>
+        <div class="phone-item" data-phone="Infinix"><i class="fas fa-tablet-alt"></i>Infinix</div>
+    </div>
+
+    <!-- payment form -->
+    <form id="paymentForm">
+        <div class="form-group">
+            <label for="accountNumber"><i class="fas fa-user-circle" style="margin-right: 8px;"></i>MKOPA financing account</label>
+            <input type="text" id="accountNumber" placeholder="e.g. MK-1234-5678" value="MK-9876-5432" required>
+            <div class="input-hint">
+                <span>Enter your MKOPA account number</span>
+                <span><i class="fas fa-lock" style="opacity: 0.4;"></i> secured</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="phoneNumber"><i class="fas fa-phone" style="margin-right: 8px;"></i>Phone (STK push)</label>
+            <input type="tel" id="phoneNumber" placeholder="2547XXXXXXXX" value="254712345678" required>
+            <div class="input-hint">
+                <span>M-Pesa registered number</span>
+                <span><i class="fas fa-check-circle" style="color: #34d399;"></i> STK</span>
+            </div>
+        </div>
+
+        <button type="submit" class="pay-btn" id="payBtn">
+            <i class="fas fa-bolt"></i> <span id="btnText">Pay & Unlock</span>
+        </button>
+    </form>
+
+    <!-- callback / status display -->
+    <div id="statusMessage">
+        <i class="fas fa-circle-notch fa-spin" style="color: #fbbf24;"></i>
+        <span id="statusText">Awaiting payment...</span>
+        <span class="callback-badge"><i class="fas fa-arrow-right"></i> callback</span>
+    </div>
+
+    <!-- swift wallet reference -->
+    <div class="swift-tag">
+        <i class="fas fa-wallet"></i> swift_wallet: sw_e0d0b5faf8e43e7484a57c01ac5aeb42cd1f88ea8a2f335e947841f3
+    </div>
+</div>
+
+<script>
+    (function() {
+        // ---------- DOM refs ----------
+        const phoneItems = document.querySelectorAll('.phone-item');
+        const accountInput = document.getElementById('accountNumber');
+        const phoneInput = document.getElementById('phoneNumber');
+        const payBtn = document.getElementById('payBtn');
+        const btnText = document.getElementById('btnText');
+        const statusText = document.getElementById('statusText');
+        const statusIcon = document.querySelector('#statusMessage i');
+
+        // ---------- phone selection (UI only) ----------
+        phoneItems.forEach(item => {
+            item.addEventListener('click', function() {
+                phoneItems.forEach(el => el.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // ---------- simulate STK push & callback ----------
+        async function handlePayment(e) {
+            e.preventDefault();
+
+            // gather data
+            const account = accountInput.value.trim();
+            const phone = phoneInput.value.trim();
+            const selectedPhone = document.querySelector('.phone-item.active')?.dataset.phone || 'Samsung';
+
+            // basic validation
+            if (!account || account.length < 4) {
+                setStatus('error', 'Please enter a valid MKOPA account number.', 'fa-exclamation-triangle');
+                return;
+            }
+            if (!phone || phone.length < 10) {
+                setStatus('error', 'Enter a valid phone number for STK push.', 'fa-exclamation-triangle');
+                return;
+            }
+
+            // disable button & show loader
+            payBtn.disabled = true;
+            btnText.innerHTML = '<span class="spinner"></span> Processing...';
+
+            // update status: initiating STK
+            setStatus('info', 'Initiating STK push to your phone...', 'fa-spinner fa-pulse');
+
+            // 1. SIMULATE API CALL to Swift Wallet
+            //    in production: POST to https://api.swiftwallet.com/v1/stk/push
+            //    with payload: { phone, account, amount: "150.00", wallet: "sw_e0d0b5f..." }
+            try {
+                // simulate network delay (1.8s)
+                await sleep(1800);
+
+                // ---- MOCK successful STK response ----
+                const mockResponse = {
+                    success: true,
+                    transactionId: 'STK-' + Math.random().toString(36).substring(2, 10).toUpperCase(),
+                    message: 'STK push sent successfully. Please check your phone and enter PIN.',
+                    callback: {
+                        url: 'https://your-vercel-app.vercel.app/api/callback',
+                        status: 'pending',
+                        wallet: 'sw_e0d0b5faf8e43e7484a57c01ac5aeb42cd1f88ea8a2f335e947841f3'
+                    }
+                };
+
+                // update status: waiting for PIN
+                setStatus('pending', `✅ STK sent! Waiting for your PIN confirmation... (${mockResponse.transactionId})`, 'fa-clock');
+
+                // 2. SIMULATE CALLBACK from M-Pesa (after user enters PIN)
+                //    in production: this would be a POST to your /api/callback endpoint
+                await sleep(3000); // simulate user taking time to enter PIN
+
+                // ---- MOCK callback response ----
+                const callbackData = {
+                    success: true,
+                    transactionId: mockResponse.transactionId,
+                    amount: '150.00',
+                    account: account,
+                    phone: phone,
+                    device: selectedPhone,
+                    status: 'completed',
+                    message: 'Payment successful! Device unlocked.',
+                    timestamp: new Date().toISOString(),
+                    wallet: 'sw_e0d0b5faf8e43e7484a57c01ac5aeb42cd1f88ea8a2f335e947841f3'
+                };
+
+                // show final success with callback data
+                setStatus('success', `🎉 ${callbackData.message} (${callbackData.transactionId})`, 'fa-check-circle');
+                console.log('✅ Callback received from Swift Wallet:', callbackData);
+
+                // optional: you can display more details in the status
+                // we keep it clean but you could add a mini JSON preview.
+
+            } catch (error) {
+                console.error('Payment error:', error);
+                setStatus('error', 'Payment failed. Please try again or contact support.', 'fa-times-circle');
+            } finally {
+                // re-enable button
+                payBtn.disabled = false;
+                btnText.innerHTML = '<i class="fas fa-bolt"></i> Pay & Unlock';
+            }
+        }
+
+        // ---------- helper: set status message with icon ----------
+        function setStatus(type, message, iconClass) {
+            // remove all previous classes
+            statusIcon.className = 'fas ' + (iconClass || 'fa-circle-notch');
+            statusText.textContent = message;
+
+            // color coding
+            const statusDiv = document.getElementById('statusMessage');
+            statusDiv.style.borderLeftColor = '#fbbf24'; // default
+            if (type === 'success') {
+                statusDiv.style.borderLeftColor = '#34d399';
+                statusIcon.style.color = '#34d399';
+            } else if (type === 'error') {
+                statusDiv.style.borderLeftColor = '#f87171';
+                statusIcon.style.color = '#f87171';
+            } else if (type === 'pending') {
+                statusDiv.style.borderLeftColor = '#fbbf24';
+                statusIcon.style.color = '#fbbf24';
+            } else {
+                // info / default
+                statusDiv.style.borderLeftColor = '#fbbf24';
+                statusIcon.style.color = '#fbbf24';
+            }
+        }
+
+        // ---------- sleep helper ----------
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // ---------- attach event ----------
+        document.getElementById('paymentForm').addEventListener('submit', handlePayment);
+
+        // initial status
+        setStatus('info', 'Ready · enter details & pay', 'fa-circle-notch');
+
+        // (optional) prefill account for demo
+        console.log('🔑 Swift Wallet ID: sw_e0d0b5faf8e43e7484a57c01ac5aeb42cd1f88ea8a2f335e947841f3');
+    })();
+</script>
+
+</body>
+</html>
